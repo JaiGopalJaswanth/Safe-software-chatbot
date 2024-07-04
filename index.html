@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safe software chatbot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .chat-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .chat-box {
+        margin-bottom: 10px;
+    }
+    .user-message {
+        text-align: right;
+        color: #0d6efd;
+    }
+    .bot-message {
+        text-align: left;
+        color: #198754;
+    }
+</style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-box bot-message">Hello! How can I help you today?</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatContainer = document.querySelector('.chat-container');
+    
+    // Define bot responses
+    const responses = {
+        greet: "Hello! How can I help you today?",
+        check_balance: "Your current balance is $5000.",
+        transfer_money: "Please specify the recipient and amount for the transfer.",
+        available_loans: "We offer Personal loans, business loans and student loans. Each type is tailored to meet specific financial needs.",
+        interest_rate: "Our interest rates vary based on the loan type and your credit profile. Typically, they ranges from 5% to 15% per annum.",
+        max_loan: "You can apply for a loan amount up to $50,000, depending upon your eligibility and credit worthiness",
+        documents: "You'll need to provide a valid ID, proof of income, bank statements, and address proof. Additional documentys may be required based on the loan type.",
+        time: "The approval process usually takes 24 to 48 hours, provided all documents are in order.",
+        status: "You can check the status of your application by logging into your account on our website or app. Alternatively, you can contact our customer support team.",
+        repayment: "Repayment terms vary depending on the loan type. Generally, you can choose between 12 to 60 months for repayment. Your repayment schedule will be detailed in your loan agreement",
+        fees: "There are no application fees. However, there might be processing fees or the other charges, which will be clearly outlined in your loan agreement.",
+        repay: "Loan repayments can be made through automatic bank deductions, online transfers, or directly at our partner bank branches.",
+        miss: "If you miss a repayment, you may incur late fees and it could affect your credit score. It's important to contact us as soon as possible to discuss your options.",
+        default: "Sorry, I didn't understand that. Can you please rephrase?"
+    };
+    
+    // Function to get bot response based on user message
+    function getBotResponse(message) {
+        message = message.toLowerCase();
+        
+        // Simple rule-based matching
+        if (message.includes('hello') || message.includes('hi')) {
+            return responses.greet;
+        } else if (message.includes('balance')) {
+            return responses.check_balance;
+        } else if (message.includes('transfer')) {
+            return responses.transfer_money;
+        } else if (message.includes('available loans') || message.includes('loans available') || message.includes('types of loans')) {
+            return responses.available_loans;
+        } else if (message.includes('interest')) {
+            return responses.interest_rate;
+        } else if (message.includes('maximum')) {
+            return responses.max_loan;
+        } else if (message.includes('documents')) {
+            return responses.documents;
+        } else if (message.includes('approval time') || message.includes('time to approve')) {
+            return responses.time;
+        } else if (message.includes('status')) {
+            return responses.status;
+        } else if (message.includes('time to repay') || message.includes('repayment time')) {
+            return responses.repayment;
+        } else if (message.includes('fees')) {
+            return responses.fees;
+        } else if (message.includes('repay')) {
+            return responses.repay;
+        } else if (message.includes('miss')) {
+            return responses.miss;
+        } else {
+            return responses.default;
+        }
+    }
+    
+    // Function to add user message to chat container
+    function addUserMessage(message) {
+        const chatBox = document.createElement('div');
+        chatBox.classList.add('chat-box', 'user-message');
+        chatBox.textContent = message;
+        chatContainer.appendChild(chatBox);
+    }
+    
+    // Function to add bot message to chat container
+    function addBotMessage(message) {
+        const chatBox = document.createElement('div');
+        chatBox.classList.add('chat-box', 'bot-message');
+        chatBox.textContent = message;
+        chatContainer.appendChild(chatBox);
+    }
+    
+    // Function to handle user input
+    function handleUserInput(event) {
+        event.preventDefault();
+        const userInput = event.target.elements.userInput.value.trim();
+        
+        if (userInput !== '') {
+            addUserMessage(userInput);
+            const botResponse = getBotResponse(userInput);
+            addBotMessage(botResponse);
+            event.target.elements.userInput.value = ''; // Clear input field
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom of chat
+        }
+    }
+    
+    // Event listener for form submission (user input)
+    document.querySelector('form').addEventListener('submit', handleUserInput);
+});
+</script>
+
+<div class="chat-container">
+    <form>
+        <input type="text" name="userInput" placeholder="Type your message here..." autocomplete="off" required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+</body>
+</html>
